@@ -61,6 +61,53 @@ function getCssPublicPath() {
 }
 ```
 
+### HTML
+
+```html
+<html>
+<head>
+    <script>
+        let CSS_PUBLIC_PATH = 'style.css';
+    </script>
+    <script defer src="https://unpkg.com/alpinejs-components@latest/dist/acomponents.min.js"></script>
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <title>Test AlpineJS Components</title>
+</head>
+<body>
+<h1>AlpineJS</h1>
+<div x-data="{
+    images: [
+      { name: 'Img1', 'src': 'https://fakeimg.pl/150' },
+      { name: 'Img2', 'src': 'https://fakeimg.pl/170' },
+      { name: 'Img3', 'src': 'https://fakeimg.pl/227'   }
+    ]
+  }"
+>
+    <ul>
+        <template x-for="img in images">
+            <a-component template="test"/>
+        </template>
+    </ul>
+</div>
+</body>
+</html>
+```
+### Component Test
+#### ./components/test.html
+```html
+<script>
+    function initImg() {
+        return {
+            imgData: this.$data.img,
+            showImg: true,
+        }
+    }
+</script>
+<div x-data="initImg" x-show="imgData">
+    Test Component
+    <img x-show="showImg" :src="imgData.src" x-bind:alt="imgData.name" @click="showImg = false" />
+</div>
+```
 
 
 ### Stats
