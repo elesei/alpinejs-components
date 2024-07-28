@@ -61,7 +61,7 @@ function getCssPublicPath() {
 }
 ```
 
-### HTML
+### Simple HTML
 
 ```html
 <html>
@@ -105,8 +105,30 @@ function getCssPublicPath() {
 </script>
 <div x-data="initImg" x-show="imgData">
     Test Component
-    <img x-show="showImg" :src="imgData.src" x-bind:alt="imgData.name" @click="showImg = false" />
+    <img x-show="showImg" :src="imgData.src" :alt="imgData.name" />
+    <a-component template="bnt-hide-img" />
 </div>
+```
+### Nested component
+
+#### ./components/bnt-hide-img.html
+```html
+
+<script>
+    function initBtn() {
+        return {
+            showImgBtn: this.$data.showImg,
+            init() {
+                this.$watch('showImgBtn', (value) => {
+                    this.$data.showImg = value;
+                });
+            },
+        }
+    }
+</script>
+<button x-data="initBtn" @click="showImgBtn = false;">
+    Hide Image
+</button>
 ```
 
 
