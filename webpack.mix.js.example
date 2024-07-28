@@ -1,0 +1,34 @@
+const mix = require('laravel-mix');
+const path = require("path");
+const webpack = require('webpack');
+const fs = require('fs');
+
+mix.webpackConfig({
+    plugins: [
+        new webpack.DefinePlugin({
+            CSS_PUBLIC_PATH: JSON.stringify(getCssPublicPath()),
+            JS_PUBLIC_PATH: JSON.stringify(getJSPublicPath())
+        })
+    ]
+});
+
+function getCssPublicPath() {
+    const manifestPath = path.resolve(__dirname, 'public/mix-manifest.json');
+    if (fs.existsSync(manifestPath)) {
+        const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+        return manifest['/css/style.css'] || '/css/style.css';
+    } else {
+        console.error('Mix manifest not found. Make sure you have compiled your assets.');
+        return '';
+    }
+}
+function getJSPublicPath() {
+    const manifestPath = path.resolve(__dirname, 'public/mix-manifest.json');
+    if (fs.existsSync(manifestPath)) {
+        const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+        return manifest['/js/script.js'] || '/js/script.js';
+    } else {
+        console.error('Mix manifest not found. Make sure you have compiled your assets.');
+        return '';
+    }
+}

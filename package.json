@@ -1,0 +1,26 @@
+{
+  "name": "alpinejs-components",
+  "version": "1.0.0",
+  "description": "Reusable HTML components powered by AlpineJS",
+  "keywords": [
+    "Alpine",
+    "AlpineJS",
+    "AlpineJS Plugin",
+    "AlpineJS Component",
+    "HTML Components"
+  ],
+  "author": "Elesei",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/elesei/alpinejs-components"
+  },
+  "module": "dist/acomponents.esm.js",
+  "unpkg": "dist/acomponents.min.js",
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.23.0"
+  }
+}
