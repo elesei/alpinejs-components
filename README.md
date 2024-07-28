@@ -32,6 +32,37 @@ Alpine.plugin(component)
 Alpine.start()
 ```
 
+## Example
+
+### Laravel mix integration
+
+```js
+const mix = require('laravel-mix');
+const path = require("path");
+const webpack = require('webpack');
+const fs = require('fs');
+
+mix.webpackConfig({
+    plugins: [
+        new webpack.DefinePlugin({
+            CSS_PUBLIC_PATH: JSON.stringify(getCssPublicPath()),
+        })
+    ]
+});
+function getCssPublicPath() {
+    const manifestPath = path.resolve(__dirname, 'public/mix-manifest.json');
+    if (fs.existsSync(manifestPath)) {
+        const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf-8'));
+        return manifest['/css/style.css'] || '/css/style.css';
+    } else {
+        console.error('Mix manifest not found. Make sure you have compiled your assets.');
+        return '';
+    }
+}
+```
+
+
+
 ### Stats
 
 ![](https://img.shields.io/bundlephobia/min/alpinejs-components)
