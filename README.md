@@ -85,7 +85,7 @@ function getCssPublicPath() {
 >
     <ul>
         <template x-for="img in images">
-            <a-component template="test"/>
+            <a-component template="test" styles=".../css/style.css,/style/style.css..."/>
         </template>
     </ul>
 </div>

@@ -1,4 +1,5 @@
 import {initCss} from './initCss'
+import {initStyles} from './initStyles'
 import {init} from './init'
 
 
@@ -15,11 +16,13 @@ export default function (Alpine) {
 
             const {
                 template: componentTemplate = {value: ''},
+                styles: componentStyles = {value: ''}
             } = this.attributes
 
             const urlName = `/components/${componentTemplate.value}.html`;
             init(Alpine, urlName, shadowDom, componentTemplate.value);
             initCss(shadowDom)
+            initStyles(shadowDom, componentStyles.value)
             this._hasInit = true
         }
     }
