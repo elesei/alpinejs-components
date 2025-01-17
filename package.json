@@ -13,7 +13,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/elesei/alpinejs-components"
+    "url": "git+https://github.com/elesei/alpinejs-components.git"
   },
   "module": "dist/acomponents.esm.js",
   "unpkg": "dist/acomponents.min.js",
