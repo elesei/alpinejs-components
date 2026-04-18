@@ -2,6 +2,19 @@ import {initCss} from './initCss'
 import {initStyles} from './initStyles'
 import {init} from './init'
 
+const htmlTemplatePathPattern = /\.html(?:[?#].*)?$/i
+
+function resolveTemplateUrl(templateValue = '') {
+    const templateName = templateValue.trim()
+
+    if (!templateName) {
+        throw new Error('The "template" attribute is required for a-component')
+    }
+
+    return htmlTemplatePathPattern.test(templateName)
+        ? templateName
+        : `/components/${templateName}.html`
+}
 
 export default function (Alpine) {
     class ComponentWrapper extends HTMLElement {
@@ -19,8 +32,10 @@ export default function (Alpine) {
                 styles: componentStyles = {value: ''}
             } = this.attributes
 
-            const urlName = `/components/${componentTemplate.value}.html`;
-            init(Alpine, urlName, shadowDom, componentTemplate.value);
+            const templateName = componentTemplate.value.trim()
+            const urlName = resolveTemplateUrl(templateName)
+
+            init(Alpine, urlName, shadowDom, templateName)
             initCss(shadowDom)
             initStyles(shadowDom, componentStyles.value)
             this._hasInit = true

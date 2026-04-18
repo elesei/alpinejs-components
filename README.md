@@ -32,6 +32,12 @@ Alpine.plugin(component)
 Alpine.start()
 ```
 
+The `template` attribute supports both component names and explicit HTML paths:
+
+- `template="test"` resolves to `/components/test.html`
+- `template="test.html"` is used as-is
+- `template="/build/test.abc123.html"` is used as-is
+
 ## Example
 
 ### Laravel mix integration

@@ -1,31 +1,36 @@
-const templateFetchPromises = {};
+const templateFetchPromises = Object.create(null);
+const templateCache = Object.create(null);
 
-export async function init(Alpine, urlName, shadowDom, template) {
-    let htmlTemplate = '';
+export async function init(Alpine, urlName, shadowDom, templateName = urlName) {
+    let htmlTemplate = templateCache[urlName];
 
-    if (!templateFetchPromises[template]) {
-        if (!document.customElements[template]) {
-            templateFetchPromises[template] = fetch(urlName)
-                .then(response => response.text())
+    if (!htmlTemplate) {
+        if (!templateFetchPromises[urlName]) {
+            templateFetchPromises[urlName] = fetch(urlName)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`Failed to fetch template "${templateName}" from "${urlName}" (${response.status} ${response.statusText})`);
+                    }
+
+                    return response.text();
+                })
                 .then(text => {
                     htmlTemplate = text.trim();
-                    document.customElements[template] = htmlTemplate;
-                    delete templateFetchPromises[template];
+                    templateCache[urlName] = htmlTemplate;
+                    delete templateFetchPromises[urlName];
                     return htmlTemplate;
                 })
                 .catch(err => {
-                    delete templateFetchPromises[template];
+                    delete templateFetchPromises[urlName];
                     throw err;
                 });
-        } else {
-            htmlTemplate = document.customElements[template];
         }
+
+        htmlTemplate = await templateFetchPromises[urlName];
     }
 
-    htmlTemplate = await templateFetchPromises[template] || document.customElements[template];
-
     if (!htmlTemplate) {
-        throw new Error(`Failed to load template: ${template}`);
+        throw new Error(`Failed to load template: ${templateName}`);
     }
 
     let newComponent = new DOMParser().parseFromString(
@@ -56,6 +61,10 @@ export async function init(Alpine, urlName, shadowDom, template) {
         } else {
             newComponent = newComponent.body.firstChild;
         }
+    }
+
+    if (!newComponent) {
+        throw new Error(`Template "${templateName}" did not produce a root element`);
     }
 
     const aComponents = Array.from(newComponent.querySelectorAll('a-component')).map(component => {
