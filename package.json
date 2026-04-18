@@ -15,6 +15,9 @@
     "type": "git",
     "url": "git+https://github.com/elesei/alpinejs-components.git"
   },
+  "files": [
+    "dist"
+  ],
   "module": "dist/acomponents.esm.js",
   "unpkg": "dist/acomponents.min.js",
   "scripts": {
